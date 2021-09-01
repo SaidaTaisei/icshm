@@ -7,6 +7,7 @@ import tensorflow as tf
 from tensorflow.keras import datasets, layers, models, Input, Model
 from skimage.transform import resize,rescale
 from PIL import Image
+from Helper import Helper
 
 def rgb2gray(rgb):
     """
@@ -109,7 +110,19 @@ if __name__=="__main__":
         np.save(validation_y_path + ".npy",validation_y)  # validation data x,y
         np.save(test_x_path + ".npy",test_x)
         np.save(test_y_path + ".npy",test_y)  # test data x,y
-
+    i = np.random.randint(len(validation_x))
+    fig, axes = plt.subplots(1, 8, figsize=(16, 112))
+    axes[0].imshow(validation_x[i])
+    axes[1].imshow(validation_y[i][:, :, 0])
+    axes[2].imshow(validation_y[i][:, :, 1])
+    axes[3].imshow(validation_y[i][:, :, 2])
+    axes[4].imshow(validation_y[i][:, :, 3])
+    axes[5].imshow(validation_y[i][:, :, 4])
+    axes[6].imshow(validation_y[i][:, :, 5])
+    axes[7].imshow(validation_y[i][:, :, 6])
+    plt.show()
+    Helper.visualize(test_x, test_y, test_y, 10)
+    Helper.saveImage(test_x, test_y, test_y)
     """ make train model (setting) """
     """ If you have a GPU, consider using it. """
     """ Depending on the case, you can expect about 10 times faster speed. """
@@ -185,7 +198,7 @@ if __name__=="__main__":
                            tf.keras.metrics.MeanIoU(train_y.shape[-1])])
 
     """ train here, but it's going to take some time, so don't rush """
-    history = model.fit(train_x, train_y, batch_size=64, epochs=150,
+    history = model.fit(train_x, train_y, batch_size=64, epochs=60,
                         validation_data=(validation_x, validation_y))
     print(history)
     loss = history.history['loss']
@@ -206,4 +219,6 @@ if __name__=="__main__":
     print("test results:", results)
 
     """ Predict Test """
-    predict = model.predict(test_x)
+    predict_y = model.predict(test_x)
+    print(predict_y.shape)
+    Helper.saveImage(test_x,test_y,predict_y)
