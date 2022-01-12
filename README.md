@@ -31,3 +31,17 @@ This is a python program for IC-SHM.
 ### predict with model  
 `python predict_component.py`  
 ## crack
+### training to create model  
+`python training_crack.py`  
+### predict with model  
+`python predict_crack.py` 
+## spall
+### training to create model  
+`python training_spall.py`  
+### predict with model  
+`python predict_spall.py` 
+## rebar
+### training to create model  
+`python training_rebar.py`  
+### predict with model  
+`python predict_rebar.py` 
